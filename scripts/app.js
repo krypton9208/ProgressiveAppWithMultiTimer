@@ -211,7 +211,7 @@
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-      .register('ProgressiveAppWithMultiTimer/service-worker.js')
+      .register('service-worker.js')
       .then(function() {  });
   }
 
