@@ -1,5 +1,5 @@
 var cacheName = 'Client-List';
-var folderName = '';
+var folderName = 'ProgressiveAppWithMultiTimer/';
 var filesToCache = [
   folderName + 'index.html',
   folderName + 'service-worker.js',
