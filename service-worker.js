@@ -1,34 +1,23 @@
-var cacheName = 'weatherPWA-step-6-1';
+var cacheName = 'Client-List';
+var folderName = 'ProgressiveAppWithMultiTimer';
 var filesToCache = [
-  '/',
-  '/index.html',
-  '/service-worker.js',
-  '/favicon.ico',
-  '/images/icons/icon-16x16.png',
-  '/images/icons/icon-24x24.png',
-  '/images/icons/icon-32x32.png',
-  '/images/icons/icon-48x48.png',
-  '/images/icons/icon-64x64.png',
-  '/images/icons/icon-128x128.png',
-  '/images/icons/icon-256x256.png',
-  '/images/icons/icon-512x512.png',
-  '/scripts/app.js',
-  '/scripts/guidHelper.js',
-  '/styles/inline.css',
-  '/styles/css/bootstrap.min.css',
-  '/images/clear.png',
-  '/images/cloudy-scattered-showers.png',
-  '/images/cloudy.png',
-  '/images/fog.png',
-  '/images/ic_add_white_24px.svg',
-  '/images/ic_refresh_white_24px.svg',
-  '/images/partly-cloudy.png',
-  '/images/rain.png',
-  '/images/scattered-showers.png',
-  '/images/sleet.png',
-  '/images/snow.png',
-  '/images/thunderstorm.png',
-  '/images/wind.png'];
+  folderName + '/',
+  folderName + '/index.html',
+  folderName + '/service-worker.js',
+  folderName + '/favicon.ico',
+  folderName + '/manifest.json',
+  folderName + '/images/icons/icon-16x16.png',
+  folderName + '/images/icons/icon-24x24.png',
+  folderName + '/images/icons/icon-32x32.png',
+  folderName + '/images/icons/icon-48x48.png',
+  folderName + '/images/icons/icon-64x64.png',
+  folderName + '/images/icons/icon-128x128.png',
+  folderName + '/images/icons/icon-256x256.png',
+  folderName + '/images/icons/icon-512x512.png',
+  folderName + '/scripts/app.js',
+  folderName + '/scripts/guidHelper.js',
+  folderName + '/styles/inline.css',
+  folderName + '/styles/css/bootstrap.min.css'];
 
 self.addEventListener('install', function(e) {
   e.waitUntil(
