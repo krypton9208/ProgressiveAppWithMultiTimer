@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,38 +7,55 @@
   <meta name="theme-color" content="#2196F3">
 
   <title>Client timer</title>
+  <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" type="text/css" href="styles/inline.css">
-
+  <link rel="stylesheet" type="text/css" href="styles/css/bootstrap.min.css">
+  <script src="scripts/guidHelper.js" async defer="defer"></script>
+  <script>
+    if (location.protocol != 'https:')
+    {
+//      location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+    }
+  </script>
 </head>
-<body>
-<header class="header">
+<body class="container-fluid">
+<header class="header row">
   <h1 class="header__title">Client timer</h1>
-  <button id="butAdd" class="headerButton"></button>
+  <button id="butAdd" name="addTaskButton" class="headerButton">+</button>
 </header>
 
-<main class="main">
-  <div class="card timerTemplate weather-forecast" hidden>
-    <label id="name"></label>
-    <span class="timerTimeHours"></span>:
-    <span class="timerTimeMinutes"></span>:
-    <span class="timerTimeSeconds"></span>
-    <button class="btn btn-default pull-right timerStart">Start</button>
-    <button class="btn btn-default pull-right timerEnd hidden">End</button>
+<main class="main ">
+  <div class="row card timerTemplate weather-forecast" hidden>
+    <div class="col-sm-4 col-lg-2 col-xs-12">
+      <label id="name"></label>
+    </div>
+    <div class="col-sm-3 col-lg-4 col-xs-12">
+      <span class="timerTimeHours"></span>:<span class="timerTimeMinutes"></span>:<span class="timerTimeSeconds"></span>
+      <span id="running" class="hidden">(running)</span>
+    </div>
+    <div class="col-sm-3 col-lg-4  col-xs-6">
+      <button class="btn btn-primary timerStart">Start</button>
+      <button class="btn btn-primary timerEnd hidden">End</button>
+    </div>
+    <div class="col-sm-2 col-lg-2 col-xs-6">
+      <button class="btn btn-danger timerRemove">Remove</button>
+    </div>
+
   </div>
 </main>
 
 <div class="dialog-container">
-  <div class="dialog form-group">
-    <div class="dialog-title">Add new client</div>
+  <form id="addNewClientForm" class="dialog form-group">
+    <div class="dialog-title">Enter name of client</div>
     <div class="dialog-body">
       <input id="nameOfNewClient" class="form-control" />
     </div>
     <div class="dialog-buttons">
-      <button id="butAddClient" class="button btn btn-primary pull-right">Add</button>
-      <button id="butAddCancel" class="button btn btn-default pull-left">Cancel</button>
+      <button id="butAddClient" type="submit" class="button btn btn-primary pull-right">Add</button>
+      <button id="butAddCancel" type="reset" class="button btn btn-default pull-left">Cancel</button>
     </div>
-  </div>
+  </form>
 </div>
 
 <div class="loader">
@@ -46,8 +63,6 @@
     <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
   </svg>
 </div>
-<script src="scripts/guidHelper.js" async defer="defer"></script>
 <script src="scripts/app.js"  async defer="defer"></script>
-<link rel="stylesheet" href="styles/css/bootstrap.min.css">
 </body>
 </html>

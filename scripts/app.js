@@ -19,22 +19,23 @@
    ****************************************************************************/
   document.getElementById('butAdd').addEventListener('click', function() {
     app.toggleAddDialog(true);
-  });
+  }, {passive: true});
 
-  document.getElementById('butAddClient').addEventListener('click', function() {
+  document.getElementById('addNewClientForm').addEventListener('submit', function() {
     // Add the newly selected city
+    app.updateLoading(true)
     var select = document.getElementById('nameOfNewClient');
     var selected = select.value;
     var key = guid();
     var name = selected;
     app.addNewClient(key, name);
     app.toggleAddDialog(false);
-  });
+  }, {passive: true});
 
   document.getElementById('butAddCancel').addEventListener('click', function() {
     // Close the add new city dialog
     app.toggleAddDialog(false);
-  });
+  }, {passive: true});
 
   /*****************************************************************************
    *
@@ -51,7 +52,6 @@
   };
 
   app.updateClientCard = function(data) {
-    console.log(data)
     var id = data.id;
     var name = data.name;
     var created = data.created;
@@ -66,19 +66,21 @@
       client.querySelector('.timerTimeSeconds').textContent = pad(totalSeconds%60);
       client.querySelector('.timerStart').onclick = function () { app.startTimer(id) };
       client.querySelector('.timerEnd').onclick = function () { app.endTimer(id, parseInt(client.querySelector('.timerTimeHours').textContent * 3600 + client.querySelector('.timerTimeMinutes').textContent * 60 + client.querySelector('.timerTimeSeconds').textContent)) };
+      client.querySelector('.timerRemove').onclick = function () { app.removeTimer(id)  }
       client.setAttribute('id', id);
       client.querySelector('#name').textContent = name ;
       client.removeAttribute('hidden');
       app.container.appendChild(client);
       app.visibleClients[id] = client;
     }
-    app.updateLoading(true)
+
   };
 
   app.startNewTimerForClient = function (key, totalSeconds) {
     var clientContainer = app.visibleClients[key];
     clientContainer.querySelector('.timerStart').classList.add('hidden');
     clientContainer.querySelector('.timerEnd').classList.remove('hidden');
+    clientContainer.querySelector('#running').classList.remove('hidden');
     var i = totalSeconds;
     app.timers[key] = setInterval( function () {
       clientContainer.querySelector('.timerTimeHours').textContent = pad(parseInt(i/3600));
@@ -93,14 +95,24 @@
     var clientContainer = app.visibleClients[key];
     clientContainer.querySelector('.timerStart').classList.remove('hidden');
     clientContainer.querySelector('.timerEnd').classList.add('hidden');
+    clientContainer.querySelector('#running').classList.add('hidden');
     clientContainer.querySelector('.timerTimeHours').textContent = pad(parseInt(totalTime/3600));
     clientContainer.querySelector('.timerTimeMinutes').textContent = pad(parseInt(totalTime/60));
     clientContainer.querySelector('.timerTimeSeconds').textContent = pad(totalTime%60);
 
   };
 
+  app.removeTimerForClient = function (key) {
+    var clientContainer = app.visibleClients[key];
+
+    clientContainer.parentNode.removeChild(clientContainer);
+    app.visibleClients[key] = null;
+
+    app.updateLoading(true);
+  };
+
   app.updateLoading = function (value) {
-    if (app.isLoading) {
+    if (value) {
       app.spinner.setAttribute('hidden', true);
       app.container.removeAttribute('hidden');
     } else {
@@ -141,13 +153,13 @@
 
     // TODO add cache logic here
     window.localStorage.setItem(key, JSON.stringify(client));
-    window.localStorage.setItem('currentClientsList', JSON.stringify(app.currentClientsList))
+    window.localStorage.setItem('currentClientsList', JSON.stringify(app.currentClientsList));
 
     app.updateClientCard(client)
   };
 
  app.startTimer = function (key) {
-   var client = JSON.parse(window.localStorage.getItem(key))
+   var client = JSON.parse(window.localStorage.getItem(key));
 
    if (!client.timerSessions) client.timerSessions = [];
    client.timerSessions.push({
@@ -173,22 +185,34 @@
     app.endTimerForClient(key, client.totalTime);
   };
 
+  app.removeTimer = function (key) {
+    app.updateLoading(false);
+
+    app.currentClientsList.splice(app.currentClientsList.indexOf(key), 1)
+
+    window.localStorage.removeItem(key);
+    window.localStorage.setItem('currentClientsList', JSON.stringify(app.currentClientsList));
+
+    app.removeTimerForClient(key)
+  };
+
   app.currentClientsList = JSON.parse(window.localStorage.getItem('currentClientsList'));
   if (!app.currentClientsList) {
     app.currentClientsList = [];
-    app.updateLoading(false);
+    app.updateLoading(true);
   } else {
     app.currentClientsList.forEach( function (client) {
       if (JSON.parse(window.localStorage.getItem(client))) {
         app.updateClientCard(JSON.parse(window.localStorage.getItem(client)))
       }
     });
+    app.updateLoading(true);
   }
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-      .register('./service-worker.js')
-      .then(function() { console.log('Service Worker Registered'); });
+      .register('service-worker.js')
+      .then(function() {  });
   }
 
 })();
