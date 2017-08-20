@@ -82,11 +82,11 @@
     clientContainer.querySelector('.timerEnd').classList.remove('hidden');
     clientContainer.querySelector('#running').classList.remove('hidden');
     var i = totalSeconds;
-    app.timers[key] = setInterval( function () {
+    app.timers[key] = setInterval( function updateText() {
+      i++;
       clientContainer.querySelector('.timerTimeHours').textContent = pad(parseInt(i/3600));
       clientContainer.querySelector('.timerTimeMinutes').textContent = pad(parseInt(i/60));
       clientContainer.querySelector('.timerTimeSeconds').textContent = pad(i%60);
-      i++
     }, 1000);
   };
 
