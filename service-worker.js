@@ -1,7 +1,7 @@
 var cacheName = 'Client-List';
 var folderName = 'ProgressiveAppWithMultiTimer';
 var filesToCache = [
-  folderName + '/',
+  folderName + 'ProgressiveAppWithMultiTimer/',
   folderName + '/index.html',
   folderName + '/service-worker.js',
   folderName + '/favicon.ico',
