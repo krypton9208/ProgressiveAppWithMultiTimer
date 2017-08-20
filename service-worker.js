@@ -3,7 +3,7 @@ var folderName = 'ProgressiveAppWithMultiTimer';
 var filesToCache = [
   folderName + '/',
   folderName + '/index.html',
-  folderName + '/service-worker.js',
+  '/service-worker.js',
   folderName + '/favicon.ico',
   folderName + '/manifest.json',
   folderName + '/images/icons/icon-16x16.png',
