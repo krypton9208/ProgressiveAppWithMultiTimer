@@ -133,7 +133,8 @@
     const client = {
       id: key,
       created: new Date(),
-      name: label
+      name: label,
+      totalTime: 0
     };
 
     app.currentClientsList.push(key);
@@ -153,9 +154,6 @@
      startTimer: new Date(),
      endTimer: null
    });
-
-   if (client.totalTime === undefined) client.totalTime = 0;
-
 
    window.localStorage.removeItem(key);
    window.localStorage.setItem(key, JSON.stringify(client));
