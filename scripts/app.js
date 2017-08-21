@@ -84,7 +84,7 @@
     var totalSeconds = app.totalSecondsForClient(id);
     var notEnded = false;
 
-    if (data.timerSessions) {
+    if (data.timerSessions.length > 0) {
       notEnded = data.timerSessions[data.timerSessions.length -1 ].endTimer === null;
     }
 
