@@ -234,6 +234,7 @@
     var totalTime = 0;
 
     app.localStorage.getSingleClient(key).timerSessions.forEach( function (e) {
+      if (e === undefined) return;
       if (e.endTimer === null) {
         totalTime += app.totalSecondsBetweenDates(new Date(), e.startTimer);
         return;
