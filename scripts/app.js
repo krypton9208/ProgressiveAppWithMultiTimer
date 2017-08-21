@@ -15,6 +15,32 @@
 
   /*****************************************************************************
    *
+   * Methods for dealing with localStorage
+   *
+   ****************************************************************************/
+
+  app.localStorage.getSingleClient = function (key) {
+    return JSON.parse(window.localStorage.getItem(key))
+  };
+
+  app.localStorage.saveSingleClient = function (key, client) {
+    window.localStorage.setItem(key, JSON.stringify(client));
+  };
+
+  app.localStorage.removeSingleClient = function (key) {
+    window.localStorage.removeItem(key);
+  };
+
+  app.localStorage.getCurrentClientList = function () {
+    return JSON.parse(window.localStorage.getItem('currentClientsList'))
+  };
+
+  app.localStorage.saveCurrentClientList = function () {
+    window.localStorage.setItem('currentClientsList', JSON.stringify(app.currentClientsList));
+  };
+
+  /*****************************************************************************
+   *
    * Event listeners for UI elements
    *
    ****************************************************************************/
@@ -22,15 +48,15 @@
     app.toggleAddDialog(true);
   }, {passive: true});
 
-  document.getElementById('addNewClientForm').addEventListener('submit', function() {
+  document.getElementById('butAddClient').addEventListener('click', function() {
     // Add the newly selected city
-    app.updateLoading(true)
+    app.updateLoading(true);
     var select = document.getElementById('nameOfNewClient');
     var selected = select.value;
     var key = guid();
-    var name = selected;
-    app.addNewClient(key, name);
+    app.addNewClient(key, selected);
     app.toggleAddDialog(false);
+    document.getElementById('nameOfNewClient').value = '';
   }, {passive: true});
 
   document.getElementById('butAddCancel').addEventListener('click', function() {
@@ -55,7 +81,12 @@
   app.updateClientCard = function(data) {
     var id = data.id;
     var name = data.name;
-    var totalSeconds = data.totalTime;
+    var totalSeconds = app.totalSecondsForClient(id);
+    var notEnded = false;
+
+    if (data.timerSessions) {
+      notEnded = data.timerSessions[data.timerSessions.length -1 ].endTimer === null;
+    }
 
     var client = app.visibleClients[id];
     if (!client) {
@@ -72,6 +103,9 @@
       client.removeAttribute('hidden');
       app.container.appendChild(client);
       app.visibleClients[id] = client;
+      if (notEnded) {
+        app.startNewTimerForClient(id, app.totalSecondsForClient(id))
+      }
     }
 
   };
@@ -156,9 +190,9 @@
      endTimer: null
    });
 
-   app.localStorage.saveSingleClient(key, client)
+   app.localStorage.saveSingleClient(key, client);
 
-   app.startNewTimerForClient(key, client.totalTime);
+   app.startNewTimerForClient(key, app.totalSecondsForClient(key));
  };
 
   app.endTimer = function (key, totalSeconds) {
@@ -167,7 +201,7 @@
     client.timerSessions[client.timerSessions.length -1].endTimer = new Date();
     client.totalTime = totalSeconds;
 
-    app.localStorage.saveSingleClient(key, client)
+    app.localStorage.saveSingleClient(key, client);
 
     app.endTimerForClient(key, client.totalTime);
   };
@@ -195,15 +229,33 @@
     }
   };
 
+  app.totalSecondsForClient = function (key) {
+    var totalTime = 0;
+
+    app.localStorage.getSingleClient(key).timerSessions.forEach( function (e) {
+      if (e.endTimer === null) {
+        totalTime += app.totalSecondsBetweenDates(new Date(), e.startTimer);
+        return;
+      }
+      totalTime += app.totalSecondsBetweenDates(e.endTimer, e.startTimer);
+    });
+
+    return totalTime;
+  };
+
+  app.totalSecondsBetweenDates = function (dateFirst, dateSecond) {
+    return Math.floor((new Date(dateFirst).getTime() - new Date(dateSecond).getTime()) / 1000);
+  };
+
   app.currentClientsList = app.localStorage.getCurrentClientList();
   if (!app.currentClientsList) {
     app.currentClientsList = [];
     app.updateLoading(true);
   } else {
     app.currentClientsList.forEach( function (client) {
-      var value = app.localStorage.getSingleClient(client)
+      var value = app.localStorage.getSingleClient(client);
       if (value) {
-        app.updateClientCard(app.localStorage.getSingleClient(value))
+        app.updateClientCard(value)
       }
     });
     app.updateLoading(true);
@@ -215,31 +267,4 @@
       .then(function() {  });
   }
 
-  /*****************************************************************************
-   *
-   * Methods for dealing with localStorage
-   *
-   ****************************************************************************/
-
-  app.localStorage.getSingleClient = function (key) {
-    return JSON.parse(window.localStorage.getItem(key))
-  };
-
-  app.localStorage.saveSingleClient = function (key, client) {
-    window.localStorage.setItem(key, JSON.stringify(client));
-  };
-
-  app.localStorage.removeSingleClient = function (key) {
-    window.localStorage.removeItem(key);
-  };
-
-  app.localStorage.getCurrentClientList = function () {
-    return JSON.parse(window.localStorage.getItem('currentClientsList'))
-  };
-
-  app.localStorage.saveCurrentClientList = function () {
-    window.localStorage.setItem('currentClientsList', JSON.stringify(app.currentClientsList));
-  };
-
-
-})();
+ })();
