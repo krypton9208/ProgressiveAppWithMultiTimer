@@ -170,6 +170,7 @@
       id: key,
       created: new Date(),
       name: label,
+      timerSessions: [],
       totalTime: 0
     };
 
