@@ -44,11 +44,15 @@
    * Event listeners for UI elements
    *
    ****************************************************************************/
-  document.getElementById('butAdd').addEventListener('click', function() {
-    app.toggleAddDialog(true);
-  }, {passive: true});
+  document.getElementById('butAdd').addEventListener('click', function(e) {
+    e.preventDefault();
 
-  document.getElementById('butAddClient').addEventListener('click', function() {
+    app.toggleAddDialog(true);
+  }, { passive: true } );
+
+  document.getElementById('butAddClient').addEventListener('click', function(e) {
+    e.preventDefault();
+
     // Add the newly selected city
     app.updateLoading(true);
     var select = document.getElementById('nameOfNewClient');
@@ -59,7 +63,9 @@
     document.getElementById('nameOfNewClient').value = '';
   }, {passive: true});
 
-  document.getElementById('butAddCancel').addEventListener('click', function() {
+  document.getElementById('butAddCancel').addEventListener('click', function(e) {
+    e.preventDefault();
+
     // Close the add new city dialog
     app.toggleAddDialog(false);
   }, {passive: true});

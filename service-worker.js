@@ -15,8 +15,7 @@ var filesToCache = [
   folderName + 'images/icons/icon-512x512.png',
   folderName + 'scripts/app.js',
   folderName + 'scripts/guidHelper.js',
-  folderName + 'styles/inline.css',
-  folderName + 'styles/css/bootstrap.min.css'];
+  folderName + 'styles/inline.css'];
 
 self.addEventListener('install', function(e) {
   e.waitUntil(
