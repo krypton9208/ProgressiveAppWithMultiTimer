@@ -44,7 +44,16 @@
    * Event listeners for UI elements
    *
    ****************************************************************************/
-  var btnAdd2 = document.getElementById('btnAdd2');
+  var  btnAdd2 = document.getElementById('btnAdd2');
+  
+  let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+  deferredPrompt = e;
+  // Update UI notify the user they can add to home screen
+  btnAdd2.style.display = 'block';
+});
   
   btnAdd2.addEventListener('click', (e) => {
   // hide our user interface that shows our A2HS button
