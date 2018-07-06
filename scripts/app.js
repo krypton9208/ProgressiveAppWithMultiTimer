@@ -44,10 +44,11 @@
    * Event listeners for UI elements
    *
    ****************************************************************************/
+  var btnAdd2 = ocument.getElementById('btnAdd2');
   
-  document.getElementById('btnAdd2').addEventListener('click', (e) => {
+  btnAdd2.addEventListener('click', (e) => {
   // hide our user interface that shows our A2HS button
-  btnAdd.style.display = 'none';
+  btnAdd2.style.display = 'none';
   // Show the prompt
   deferredPrompt.prompt();
   // Wait for the user to respond to the prompt
