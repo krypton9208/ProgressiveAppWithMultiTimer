@@ -47,8 +47,8 @@
    ****************************************************************************/
   var  btnAdd2 = document.getElementById('btnAdd2');
   
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
+window.addEventListener('beforeinstallprompt',  function (e) {
+    console.log(e);
   app.deferredPrompt = e;
   // Update UI notify the user they can add to home screen
   btnAdd2.style.display = 'block';
