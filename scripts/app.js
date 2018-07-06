@@ -11,7 +11,7 @@
     timerTemplate: document.querySelector('.timerTemplate'),
     container: document.querySelector('.main'),
     addDialog: document.querySelector('.dialog-container'),
-    deferredPrompt
+    deferredPrompt: null
   };
 
   /*****************************************************************************
