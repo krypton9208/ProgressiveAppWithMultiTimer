@@ -10,7 +10,8 @@
     spinner: document.querySelector('.loader'),
     timerTemplate: document.querySelector('.timerTemplate'),
     container: document.querySelector('.main'),
-    addDialog: document.querySelector('.dialog-container')
+    addDialog: document.querySelector('.dialog-container'),
+    deferredPrompt
   };
 
   /*****************************************************************************
@@ -46,8 +47,6 @@
    ****************************************************************************/
   var  btnAdd2 = document.getElementById('btnAdd2');
   
-  let deferredPrompt;
-
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
   deferredPrompt = e;
